@@ -137,8 +137,6 @@ export const MENU_CATEGORIES: MenuCategory[] = [
   {
     id: 'bento', name: '便當類', sortOrder: 10,
     items: [
-      item('bn-01', 'bento', 140),
-      item('bn-02', 'bento', 135),
       item('bn-03', 'bento', 100),
       item('bn-04', 'bento', 135),
       item('bn-05', 'bento', 140),
