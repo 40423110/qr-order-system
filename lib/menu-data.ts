@@ -123,7 +123,7 @@ export const MENU_CATEGORIES: MenuCategory[] = [
     items: [
       item('sd-06', 'side', 100, true, '魯'),
       item('sd-07', 'side', 95, true, '魯'),
-      item('sd-08', 'side', 80),
+      item('sd-08', 'side', 130),
       item('sd-01', 'side', 55),
       item('sd-02', 'side', 45),
       item('sd-04', 'side', 20),
