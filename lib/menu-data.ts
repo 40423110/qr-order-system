@@ -111,11 +111,11 @@ export const MENU_CATEGORIES: MenuCategory[] = [
   {
     id: 'garlic-boil', name: '蒜泥/川燙', sortOrder: 8,
     items: [
+      item('gb-08', 'garlic-boil', 140),
       item('gb-02', 'garlic-boil', 80),
       item('gb-03', 'garlic-boil', 110),
       item('gb-04', 'garlic-boil', 110),
       item('gb-06', 'garlic-boil', 100),
-      item('gb-08', 'garlic-boil', 140),
     ],
   },
   {

@@ -160,7 +160,7 @@ export const ITEM_NAMES: Record<string, Record<Lang, string>> = {
   'sd-08': { 'zh-TW': '蛤蜊燙',              en: 'Blanched Clams',                      ja: '茹でアサリ',                       ko: '데친 바지락'                        },
   'bn-01': { 'zh-TW': '魚批便當',            en: 'Milkfish Bento',                   ja: 'サバヒー弁当',               ko: '밀크피시 도시락'            },
   'bn-02': { 'zh-TW': '熱魚批便當',          en: 'Hot Milkfish Bento',               ja: '温かいサバヒー弁当',         ko: '따뜻한 밀크피시 도시락'     },
-  'bn-03': { 'zh-TW': '滷肉便當',            en: 'Braised Pork Bento',               ja: 'ルーロー弁当',               ko: '루로우 도시락'              },
+  'bn-03': { 'zh-TW': '滷肉飯便當',          en: 'Braised Pork Rice Bento',          ja: 'ルーロー飯弁当',             ko: '루로우밥 도시락'            },
   'bn-04': { 'zh-TW': '煎魚肚便當',          en: 'Pan-fried Milkfish Belly Bento',      ja: '焼きサバヒー腹弁当',               ko: '구운 밀크피시 뱃살 도시락'          },
   'bn-05': { 'zh-TW': '魯魚肚便當',          en: 'Braised Milkfish Belly Bento',        ja: '煮込みサバヒー腹弁当',             ko: '조림 밀크피시 뱃살 도시락'          },
   'bn-06': { 'zh-TW': '加蚵仔',              en: 'Add Oysters',                         ja: '牡蠣追加',                         ko: '굴 추가'                            },
