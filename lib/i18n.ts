@@ -157,6 +157,7 @@ export const ITEM_NAMES: Record<string, Record<Lang, string>> = {
   'sd-05': { 'zh-TW': '魯蛋',                en: 'Braised Egg',                         ja: '煮卵',                             ko: '장조림 달걀'                        },
   'sd-06': { 'zh-TW': '魯虱目魚肚(半片)',    en: 'Braised Milkfish Belly (Half)',       ja: '煮込みサバヒー腹（半切れ）',       ko: '조림 밀크피시 뱃살 (반 조각)'      },
   'sd-07': { 'zh-TW': '魯虱目魚皮',          en: 'Braised Milkfish Skin',               ja: '煮込みサバヒー皮',                 ko: '조림 밀크피시 껍질'                 },
+  'sd-08': { 'zh-TW': '蛤蜊燙',              en: 'Blanched Clams',                      ja: '茹でアサリ',                       ko: '데친 바지락'                        },
   'bn-01': { 'zh-TW': '魚批便當',            en: 'Milkfish Bento',                   ja: 'サバヒー弁当',               ko: '밀크피시 도시락'            },
   'bn-02': { 'zh-TW': '熱魚批便當',          en: 'Hot Milkfish Bento',               ja: '温かいサバヒー弁当',         ko: '따뜻한 밀크피시 도시락'     },
   'bn-03': { 'zh-TW': '滷肉便當',            en: 'Braised Pork Bento',               ja: 'ルーロー弁当',               ko: '루로우 도시락'              },
