@@ -8,6 +8,7 @@ import { useLangStore } from '@/store/languageStore'
 import { LANG_LABELS, tCat, tItem, t, type Lang } from '@/lib/i18n'
 import Link from 'next/link'
 import { MenuItem } from '@/types'
+import ItemName from '@/components/ItemName'
 
 function LangSelector() {
   const { lang, setLang } = useLangStore()
@@ -88,7 +89,7 @@ function MenuContent({ tableId }: { tableId: string }) {
               }`}
             >
               <div className="flex-1 min-w-0 pr-3">
-                <p className="font-medium text-gray-800 text-sm leading-snug">{name}</p>
+                <ItemName name={name} redChar={menuItem.redChar} className="font-medium text-gray-800 text-sm leading-snug" />
                 <p className="text-orange-500 font-bold text-sm mt-1">NT$ {menuItem.price}</p>
                 {!menuItem.isAvailable && (
                   <span className="text-xs text-red-400 font-medium">{ui.soldOut}</span>

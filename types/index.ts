@@ -14,6 +14,7 @@ export interface MenuItem {
   price: number
   description?: string
   isAvailable: boolean
+  redChar?: string
 }
 
 export interface MenuCategory {

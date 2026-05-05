@@ -1,7 +1,7 @@
 import { MenuCategory, MenuItem } from '@/types'
 
-function item(id: string, catId: string, price: number, avail = true): MenuItem {
-  return { id, categoryId: catId, name: id, price, isAvailable: avail }
+function item(id: string, catId: string, price: number, avail = true, redChar?: string): MenuItem {
+  return { id, categoryId: catId, name: id, price, isAvailable: avail, redChar }
 }
 
 export const MENU_CATEGORIES: MenuCategory[] = [
@@ -16,6 +16,7 @@ export const MENU_CATEGORIES: MenuCategory[] = [
       item('pf-06', 'pan-fried', 120),
       item('pf-07', 'pan-fried', 120),
       item('pf-08', 'pan-fried', 190),
+      item('pf-09', 'pan-fried', 190),
     ],
   },
   {
@@ -32,6 +33,7 @@ export const MENU_CATEGORIES: MenuCategory[] = [
       item('ns-mb-oil',   'noodle-soup', 130),
       item('ns-mb-rice',  'noodle-soup', 130),
       item('ns-mb-board', 'noodle-soup', 130),
+      item('ns-mb-misua', 'noodle-soup', 130),
       item('ns-ms-oil',   'noodle-soup', 120),
       item('ns-ms-rice',  'noodle-soup', 120),
       item('ns-ms-misua', 'noodle-soup', 120),
@@ -39,9 +41,11 @@ export const MENU_CATEGORIES: MenuCategory[] = [
       item('ns-sk-oil',   'noodle-soup', 110),
       item('ns-sk-rice',  'noodle-soup', 110),
       item('ns-sk-board', 'noodle-soup', 110),
+      item('ns-sk-misua', 'noodle-soup', 110),
       item('ns-cl-oil',   'noodle-soup', 110),
       item('ns-cl-rice',  'noodle-soup', 110),
       item('ns-cl-board', 'noodle-soup', 110),
+      item('ns-cl-misua', 'noodle-soup', 110),
     ],
   },
   {
@@ -63,16 +67,16 @@ export const MENU_CATEGORIES: MenuCategory[] = [
       item('po-01', 'porridge', 100),
       item('po-02', 'porridge', 120),
       item('po-03', 'porridge', 130),
-      item('po-04', 'porridge', 130),
+      item('po-04', 'porridge', 120),
       item('po-05', 'porridge', 120),
-      item('po-06', 'porridge', 120),
+      item('po-06', 'porridge', 110),
       item('po-07', 'porridge', 200),
     ],
   },
   {
     id: 'soup', name: '湯類', sortOrder: 5,
     items: [
-      item('sp-01', 'soup', 95),
+      item('sp-01', 'soup', 80),
       item('sp-02', 'soup', 95),
       item('sp-03', 'soup', 95),
       item('sp-04', 'soup', 90),
@@ -92,6 +96,7 @@ export const MENU_CATEGORIES: MenuCategory[] = [
       item('fr-06', 'fried', 90),
       item('fr-07', 'fried', 70),
       item('fr-08', 'fried', 60),
+      item('fr-09', 'fried', 90),
     ],
   },
   {
@@ -114,6 +119,7 @@ export const MENU_CATEGORIES: MenuCategory[] = [
       item('gb-05', 'garlic-boil', 90),
       item('gb-06', 'garlic-boil', 100),
       item('gb-07', 'garlic-boil', 130),
+      item('gb-08', 'garlic-boil', 140),
     ],
   },
   {
@@ -123,6 +129,9 @@ export const MENU_CATEGORIES: MenuCategory[] = [
       item('sd-02', 'side', 45),
       item('sd-03', 'side', 20),
       item('sd-04', 'side', 20),
+      item('sd-05', 'side', 20),
+      item('sd-06', 'side', 100, true, '魯'),
+      item('sd-07', 'side', 95, true, '魯'),
     ],
   },
   {
@@ -131,6 +140,10 @@ export const MENU_CATEGORIES: MenuCategory[] = [
       item('bn-01', 'bento', 140),
       item('bn-02', 'bento', 135),
       item('bn-03', 'bento', 100),
+      item('bn-04', 'bento', 135),
+      item('bn-05', 'bento', 140),
+      item('bn-06', 'bento', 40),
+      item('bn-07', 'bento', 40),
     ],
   },
 ]

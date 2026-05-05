@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { useCartStore } from '@/store/cartStore'
 import { useLangStore } from '@/store/languageStore'
 import { tItem, t } from '@/lib/i18n'
+import ItemName from '@/components/ItemName'
 
 function CartContent({ tableId }: { tableId: string }) {
   const searchParams = useSearchParams()
@@ -100,9 +101,11 @@ function CartContent({ tableId }: { tableId: string }) {
           >
             <div className="flex justify-between items-start">
               <div className="flex-1 min-w-0">
-                <p className="font-medium text-gray-800 text-sm">
-                  {tItem(cartItem.menuItem.id, lang)}
-                </p>
+                <ItemName
+                  name={tItem(cartItem.menuItem.id, lang)}
+                  redChar={cartItem.menuItem.redChar}
+                  className="font-medium text-gray-800 text-sm"
+                />
                 <p className="text-orange-500 text-sm font-bold mt-0.5">
                   NT$ {cartItem.menuItem.price} × {cartItem.quantity} ={' '}
                   <span className="text-gray-700">
