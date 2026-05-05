@@ -83,21 +83,33 @@ export default function AdminDashboard() {
     checkAuth()
     fetchOrders()
 
+    // Realtime subscription
     const channel = supabase
       .channel('orders-realtime')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, () => {
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'orders' }, () => {
         fetchOrders()
         if (!isFirstLoad.current) {
           setHasNewOrder(true)
-          setTimeout(() => setHasNewOrder(false), 3000)
+          setTimeout(() => setHasNewOrder(false), 4000)
           playNewOrderSound()
         }
       })
-      .subscribe()
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'orders' }, () => {
+        fetchOrders()
+      })
+      .subscribe((status) => {
+        if (status === 'SUBSCRIBED') {
+          isFirstLoad.current = false
+        }
+      })
 
-    isFirstLoad.current = false
+    // Polling fallback：每 20 秒輪詢一次，確保 Realtime 未啟用時仍能更新
+    const poll = setInterval(() => fetchOrders(), 20000)
 
-    return () => { supabase.removeChannel(channel) }
+    return () => {
+      supabase.removeChannel(channel)
+      clearInterval(poll)
+    }
   }, [checkAuth, fetchOrders])
 
   const handleLogout = async () => {

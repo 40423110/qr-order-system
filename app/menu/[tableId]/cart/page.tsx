@@ -4,6 +4,8 @@ import { Suspense, useState } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useCartStore } from '@/store/cartStore'
+import { useLangStore } from '@/store/languageStore'
+import { tItem, t } from '@/lib/i18n'
 
 function CartContent({ tableId }: { tableId: string }) {
   const searchParams = useSearchParams()
@@ -11,6 +13,8 @@ function CartContent({ tableId }: { tableId: string }) {
   const router = useRouter()
   const { items, updateQuantity, removeItem, clearCart, totalAmount, totalItems } =
     useCartStore()
+  const { lang } = useLangStore()
+  const ui = t(lang)
   const [note, setNote] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState('')
@@ -59,12 +63,12 @@ function CartContent({ tableId }: { tableId: string }) {
     return (
       <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center px-6">
         <div className="text-6xl mb-4">🛒</div>
-        <p className="text-gray-500 text-base mb-6">購物車是空的</p>
+        <p className="text-gray-500 text-base mb-6">{ui.empty}</p>
         <Link
           href={`/menu/${tableId}?table=${tableNumber}`}
           className="bg-orange-500 text-white px-8 py-3 rounded-xl font-semibold"
         >
-          返回菜單
+          {ui.backToMenu}
         </Link>
       </div>
     )
@@ -97,7 +101,7 @@ function CartContent({ tableId }: { tableId: string }) {
             <div className="flex justify-between items-start">
               <div className="flex-1 min-w-0">
                 <p className="font-medium text-gray-800 text-sm">
-                  {cartItem.menuItem.name}
+                  {tItem(cartItem.menuItem.id, lang)}
                 </p>
                 <p className="text-orange-500 text-sm font-bold mt-0.5">
                   NT$ {cartItem.menuItem.price} × {cartItem.quantity} ={' '}
