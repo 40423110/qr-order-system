@@ -2,11 +2,37 @@
 
 export const dynamic = 'force-dynamic'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase/client'
 import { Order } from '@/types'
 import Link from 'next/link'
+
+let audioCtx: AudioContext | null = null
+
+function playNewOrderSound() {
+  if (!audioCtx) return
+  ;[0, 0.15].forEach((delay) => {
+    const osc = audioCtx!.createOscillator()
+    const gain = audioCtx!.createGain()
+    osc.connect(gain)
+    gain.connect(audioCtx!.destination)
+    osc.type = 'sine'
+    osc.frequency.setValueAtTime(880, audioCtx!.currentTime + delay)
+    gain.gain.setValueAtTime(0.4, audioCtx!.currentTime + delay)
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx!.currentTime + delay + 0.2)
+    osc.start(audioCtx!.currentTime + delay)
+    osc.stop(audioCtx!.currentTime + delay + 0.2)
+  })
+}
+
+const isToday = (dateStr: string) => {
+  const d = new Date(dateStr)
+  const today = new Date()
+  return d.getFullYear() === today.getFullYear() &&
+         d.getMonth() === today.getMonth() &&
+         d.getDate() === today.getDate()
+}
 
 const STATUS_MAP = {
   pending:   { label: '待處理', color: 'bg-yellow-100 text-yellow-700', dot: 'bg-yellow-400' },
@@ -21,6 +47,18 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState<'active' | 'all'>('active')
   const [hasNewOrder, setHasNewOrder] = useState(false)
+  const [audioEnabled, setAudioEnabled] = useState(false)
+  const isFirstLoad = useRef(true)
+
+  const enableAudio = () => {
+    if (!audioCtx) {
+      audioCtx = new AudioContext()
+    }
+    if (audioCtx.state === 'suspended') {
+      audioCtx.resume()
+    }
+    setAudioEnabled(true)
+  }
 
   const checkAuth = useCallback(async () => {
     const { data: { session } } = await supabase.auth.getSession()
@@ -49,13 +87,15 @@ export default function AdminDashboard() {
       .channel('orders-realtime')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, () => {
         fetchOrders()
-        setHasNewOrder(true)
-        setTimeout(() => setHasNewOrder(false), 3000)
-        try {
-          new Audio('/notification.mp3').play().catch(() => {})
-        } catch {}
+        if (!isFirstLoad.current) {
+          setHasNewOrder(true)
+          setTimeout(() => setHasNewOrder(false), 3000)
+          playNewOrderSound()
+        }
       })
       .subscribe()
+
+    isFirstLoad.current = false
 
     return () => { supabase.removeChannel(channel) }
   }, [checkAuth, fetchOrders])
@@ -70,6 +110,17 @@ export default function AdminDashboard() {
     : orders
 
   const pendingCount = orders.filter((o) => o.status === 'pending').length
+
+  // Today's stats
+  const todayOrders = orders.filter((o) => isToday(o.created_at))
+  const todayCount = todayOrders.length
+  const todayPaid = todayOrders
+    .filter((o) => o.status === 'paid')
+    .reduce((sum, o) => sum + (o.total_amount ?? 0), 0)
+  const todayUnpaid = todayOrders
+    .filter((o) => o.status !== 'paid')
+    .reduce((sum, o) => sum + (o.total_amount ?? 0), 0)
+  const todayPending = todayOrders.filter((o) => o.status === 'pending').length
 
   if (loading) {
     return (
@@ -91,8 +142,21 @@ export default function AdminDashboard() {
             </p>
           </div>
           <div className="flex items-center gap-3">
+            <button
+              onClick={enableAudio}
+              className={`text-xs px-3 py-1.5 rounded-lg transition-colors font-medium ${
+                audioEnabled
+                  ? 'bg-green-400 text-white'
+                  : 'bg-orange-400 hover:bg-orange-300 text-white'
+              }`}
+            >
+              {audioEnabled ? '🔔 音效已開啟' : '🔔 開啟音效'}
+            </button>
             <Link href="/admin/tables" className="text-xs bg-orange-400 hover:bg-orange-300 px-3 py-1.5 rounded-lg">
               QR Code
+            </Link>
+            <Link href="/admin/stats" className="text-xs bg-orange-400 hover:bg-orange-300 px-3 py-1.5 rounded-lg">
+              營業額
             </Link>
             <button onClick={handleLogout} className="text-xs opacity-70 hover:opacity-100">
               登出
@@ -108,8 +172,32 @@ export default function AdminDashboard() {
         </div>
       )}
 
-      {/* Filter Tabs */}
       <div className="max-w-4xl mx-auto px-4 pt-4">
+        {/* Stats Panel */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+          <div className="bg-white rounded-2xl p-4 shadow-sm text-center">
+            <p className="text-xs text-gray-400 mb-1">今日訂單</p>
+            <p className="text-2xl font-bold text-orange-500">{todayCount}</p>
+            <p className="text-xs text-gray-400">單</p>
+          </div>
+          <div className="bg-white rounded-2xl p-4 shadow-sm text-center">
+            <p className="text-xs text-gray-400 mb-1">已收金額</p>
+            <p className="text-2xl font-bold text-green-600">{todayPaid.toLocaleString()}</p>
+            <p className="text-xs text-gray-400">NT$</p>
+          </div>
+          <div className="bg-white rounded-2xl p-4 shadow-sm text-center">
+            <p className="text-xs text-gray-400 mb-1">待收金額</p>
+            <p className="text-2xl font-bold text-blue-500">{todayUnpaid.toLocaleString()}</p>
+            <p className="text-xs text-gray-400">NT$</p>
+          </div>
+          <div className="bg-white rounded-2xl p-4 shadow-sm text-center">
+            <p className="text-xs text-gray-400 mb-1">待處理</p>
+            <p className="text-2xl font-bold text-orange-500">{todayPending}</p>
+            <p className="text-xs text-gray-400">筆</p>
+          </div>
+        </div>
+
+        {/* Filter Tabs */}
         <div className="flex gap-2 mb-4">
           <button
             onClick={() => setFilter('active')}

@@ -98,18 +98,15 @@ export default function OrderDetailPage() {
   })
 
   return (
-    <div className="min-h-screen bg-gray-50 print:bg-white">
+    <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-orange-500 text-white px-4 py-3 sticky top-0 z-10 shadow-md print:hidden">
+      <div className="bg-orange-500 text-white px-4 py-3 sticky top-0 z-10 shadow-md">
         <div className="max-w-2xl mx-auto flex items-center gap-3">
           <Link href="/admin" className="text-white text-xl">←</Link>
           <div className="flex-1">
             <h1 className="text-base font-bold">{order.table_number} 號桌 · 訂單詳情</h1>
             <p className="text-xs opacity-80">{time}</p>
           </div>
-          <button onClick={() => window.print()} className="text-xs bg-orange-400 px-3 py-1.5 rounded-lg">
-            列印
-          </button>
         </div>
       </div>
 
@@ -169,7 +166,7 @@ export default function OrderDetailPage() {
 
       {/* Action Button */}
       {nextAction && (
-        <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t shadow-lg print:hidden">
+        <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t shadow-lg">
           <div className="max-w-2xl mx-auto">
             <button
               onClick={() => updateStatus(nextAction.to)}
