@@ -1,0 +1,160 @@
+﻿export type Lang = 'zh-TW' | 'en' | 'ja' | 'ko'
+
+export const LANG_LABELS: Record<Lang, string> = {
+  'zh-TW': '繁中',
+  en: 'EN',
+  ja: '日本語',
+  ko: '한국어',
+}
+
+type UI = {
+  shopName: string; tableLabel: string; cart: string; viewCart: string
+  confirmOrder: string; submitOrder: string; submitting: string; backToMenu: string
+  note: string; notePlaceholder: string; total: string; itemCount: string; items: string
+  orderSuccess: string; waitMessage: string; tableNo: string; orderId: string
+  addMore: string; contactStaff: string; soldOut: string; empty: string; noCancel: string
+  networkError: string
+}
+
+const UI_STRINGS: Record<Lang, UI> = {
+  'zh-TW': {
+    shopName: '享之饌東石鮮蚵', tableLabel: '號桌', cart: '購物車', viewCart: '查看購物車',
+    confirmOrder: '確認訂單', submitOrder: '送出訂單', submitting: '送出中...', backToMenu: '返回菜單',
+    note: '備註（選填）', notePlaceholder: '例：不要香菜、辣度減半...', total: '合計',
+    itemCount: '品項數量', items: '件', orderSuccess: '訂單已送出！',
+    waitMessage: '廚房正在準備您的餐點，請稍候', tableNo: '桌號', orderId: '訂單編號',
+    addMore: '繼續加點', contactStaff: '如需修改訂單請告知服務人員', soldOut: '售完',
+    empty: '購物車是空的', noCancel: '送出後無法修改，請確認品項正確',
+    networkError: '網路錯誤，請確認連線後再試',
+  },
+  en: {
+    shopName: 'Enjoy Seafood · Dongshi Oyster', tableLabel: '', cart: 'Cart', viewCart: 'View Cart',
+    confirmOrder: 'Confirm Order', submitOrder: 'Place Order', submitting: 'Submitting...', backToMenu: 'Back to Menu',
+    note: 'Special Requests (optional)', notePlaceholder: 'e.g. No coriander, less spicy...', total: 'Total',
+    itemCount: 'Items', items: '', orderSuccess: 'Order Placed!',
+    waitMessage: 'Your order is being prepared. Please wait.', tableNo: 'Table', orderId: 'Order ID',
+    addMore: 'Order More', contactStaff: 'Please tell staff if you need to change your order', soldOut: 'Sold Out',
+    empty: 'Your cart is empty', noCancel: 'Cannot modify after submission. Please confirm.',
+    networkError: 'Network error. Please check your connection.',
+  },
+  ja: {
+    shopName: '享之饌 東石生牡蠣', tableLabel: 'テーブル', cart: 'カート', viewCart: 'カートを見る',
+    confirmOrder: '注文確認', submitOrder: '注文する', submitting: '送信中...', backToMenu: 'メニューに戻る',
+    note: '備考（任意）', notePlaceholder: '例：パクチー抜き、辛さ控えめ...', total: '合計',
+    itemCount: '品数', items: '品', orderSuccess: 'ご注文ありがとうございます！',
+    waitMessage: '厨房で準備中です。しばらくお待ちください。', tableNo: 'テーブル', orderId: '注文番号',
+    addMore: '追加注文', contactStaff: 'ご変更はスタッフにお申し付けください', soldOut: '売切れ',
+    empty: 'カートは空です', noCancel: '送信後は変更できません。ご確認ください。',
+    networkError: 'ネットワークエラー。接続を確認してください。',
+  },
+  ko: {
+    shopName: '享之饌 동석 굴 요리', tableLabel: '번 테이블', cart: '장바구니', viewCart: '장바구니 보기',
+    confirmOrder: '주문 확인', submitOrder: '주문하기', submitting: '제출 중...', backToMenu: '메뉴로 돌아가기',
+    note: '요청사항 (선택)', notePlaceholder: '예: 고수 빼주세요, 덜 맵게...', total: '합계',
+    itemCount: '품목 수', items: '개', orderSuccess: '주문이 완료되었습니다!',
+    waitMessage: '주방에서 준비 중입니다. 잠시 기다려 주세요.', tableNo: '테이블', orderId: '주문 번호',
+    addMore: '추가 주문', contactStaff: '변경이 필요하시면 직원에게 말씀해 주세요', soldOut: '품절',
+    empty: '장바구니가 비어 있습니다', noCancel: '제출 후 변경 불가. 확인해 주세요.',
+    networkError: '네트워크 오류. 연결을 확인하세요.',
+  },
+}
+
+export const CAT_NAMES: Record<string, Record<Lang, string>> = {
+  'pan-fried':   { 'zh-TW': '煎類',         en: 'Pan-Fried',         ja: '焼き物',          ko: '부침 요리'        },
+  'noodle-soup': { 'zh-TW': '湯麵類',       en: 'Soup Noodles',      ja: 'スープ麺',        ko: '국수 (국물)'      },
+  'noodle-dry':  { 'zh-TW': '乾麵類',       en: 'Dry Noodles',       ja: 'まぜ麺',          ko: '비빔국수'         },
+  porridge:      { 'zh-TW': '粥類',         en: 'Congee',            ja: 'お粥',            ko: '죽류'             },
+  soup:          { 'zh-TW': '湯類',         en: 'Soup',              ja: 'スープ',          ko: '국/탕'            },
+  fried:         { 'zh-TW': '炸物類',       en: 'Fried Items',       ja: '揚げ物',          ko: '튀김류'           },
+  rice:          { 'zh-TW': '飯類',         en: 'Rice',              ja: 'ご飯物',          ko: '밥류'             },
+  'garlic-boil': { 'zh-TW': '蒜泥/川燙',   en: 'Garlic/Blanched',   ja: 'ニンニク/茹で',   ko: '마늘/데침'        },
+  side:          { 'zh-TW': '小菜',         en: 'Sides',             ja: 'サイドメニュー',  ko: '반찬'             },
+  bento:         { 'zh-TW': '便當類',       en: 'Bento Box',         ja: 'お弁当',          ko: '도시락'           },
+}
+
+export const ITEM_NAMES: Record<string, Record<Lang, string>> = {
+  'pf-01': { 'zh-TW': '蚵仔煎',             en: 'Oyster Omelette',                     ja: '牡蠣の玉子焼き',         ko: '굴전'                       },
+  'pf-02': { 'zh-TW': '蝦仁煎',             en: 'Shrimp Omelette',                     ja: '海老の玉子焼き',         ko: '새우전'                     },
+  'pf-03': { 'zh-TW': '綜合煎',             en: 'Mixed Omelette',                      ja: 'ミックス玉子焼き',       ko: '모둠전'                     },
+  'pf-04': { 'zh-TW': '雙蛋煎',             en: 'Double Egg Omelette',                 ja: 'ダブルエッグ炒め',       ko: '달걀전'                     },
+  'pf-05': { 'zh-TW': '蔥花煎蛋 (1人份)',   en: 'Scallion Egg (1 serving)',            ja: 'ねぎ卵炒め（1人前）',    ko: '파달걀볶음 (1인분)'         },
+  'pf-06': { 'zh-TW': '蝦仁蔥蛋',           en: 'Shrimp & Scallion Egg',               ja: '海老とねぎの卵炒め',     ko: '새우파달걀'                 },
+  'pf-07': { 'zh-TW': '蝦仁惹蛋',           en: 'Shrimp Scrambled Egg',                ja: '海老スクランブルエッグ', ko: '새우달걀볶음'               },
+  'pf-08': { 'zh-TW': '無刺虱目魚煎蛋',     en: 'Boneless Milkfish Egg',               ja: '骨なしサバヒー玉子焼き', ko: '뼈없는 밀크피시 달걀전'     },
+  'ns-oy-oil':   { 'zh-TW': '蚵仔湯 · 油麵',     en: 'Oyster Soup · Yellow Noodles',        ja: '牡蠣スープ · 中華麺',    ko: '굴국 · 중화면'              },
+  'ns-oy-rice':  { 'zh-TW': '蚵仔湯 · 米粉',     en: 'Oyster Soup · Rice Vermicelli',       ja: '牡蠣スープ · ビーフン',  ko: '굴국 · 쌀국수'              },
+  'ns-oy-misua': { 'zh-TW': '蚵仔湯 · 麵線',     en: 'Oyster Soup · Thin Noodles',          ja: '牡蠣スープ · 素麺',      ko: '굴국 · 소면'                },
+  'ns-oy-board': { 'zh-TW': '蚵仔湯 · 板條',     en: 'Oyster Soup · Flat Rice Noodles',     ja: '牡蠣スープ · フォー',    ko: '굴국 · 넓적면'              },
+  'ns-sf-oil':   { 'zh-TW': '海鮮湯 · 油麵',     en: 'Seafood Soup · Yellow Noodles',       ja: '海鮮スープ · 中華麺',    ko: '해산물국 · 중화면'          },
+  'ns-sf-rice':  { 'zh-TW': '海鮮湯 · 米粉',     en: 'Seafood Soup · Rice Vermicelli',      ja: '海鮮スープ · ビーフン',  ko: '해산물국 · 쌀국수'          },
+  'ns-sf-misua': { 'zh-TW': '海鮮湯 · 麵線',     en: 'Seafood Soup · Thin Noodles',         ja: '海鮮スープ · 素麺',      ko: '해산물국 · 소면'            },
+  'ns-sf-board': { 'zh-TW': '海鮮湯 · 板條',     en: 'Seafood Soup · Flat Rice Noodles',    ja: '海鮮スープ · フォー',    ko: '해산물국 · 넓적면'          },
+  'ns-mb-oil':   { 'zh-TW': '無刺魚肚湯 · 油麵', en: 'Milkfish Belly Soup · Yellow Noodles',ja: 'サバヒー腹スープ · 中華麺',ko: '밀크피시뱃살국 · 중화면'   },
+  'ns-mb-rice':  { 'zh-TW': '無刺魚肚湯 · 米粉', en: 'Milkfish Belly Soup · Vermicelli',    ja: 'サバヒー腹スープ · ビーフン',ko: '밀크피시뱃살국 · 쌀국수' },
+  'ns-mb-board': { 'zh-TW': '無刺魚肚湯 · 板條', en: 'Milkfish Belly Soup · Flat Noodles',  ja: 'サバヒー腹スープ · フォー',ko: '밀크피시뱃살국 · 넓적면'  },
+  'ns-ms-oil':   { 'zh-TW': '無刺魚(去皮)湯 · 油麵', en: 'Skinless Milkfish Soup · Yellow Noodles', ja: '皮なしサバヒー · 中華麺',  ko: '껍질없는 밀크피시국 · 중화면' },
+  'ns-ms-rice':  { 'zh-TW': '無刺魚(去皮)湯 · 米粉', en: 'Skinless Milkfish Soup · Vermicelli',     ja: '皮なしサバヒー · ビーフン', ko: '껍질없는 밀크피시국 · 쌀국수' },
+  'ns-ms-misua': { 'zh-TW': '無刺魚(去皮)湯 · 麵線', en: 'Skinless Milkfish Soup · Thin Noodles',   ja: '皮なしサバヒー · 素麺',     ko: '껍질없는 밀크피시국 · 소면'   },
+  'ns-ms-board': { 'zh-TW': '無刺魚(去皮)湯 · 板條', en: 'Skinless Milkfish Soup · Flat Noodles',   ja: '皮なしサバヒー · フォー',   ko: '껍질없는 밀크피시국 · 넓적면' },
+  'ns-sk-oil':   { 'zh-TW': '虱目魚皮湯 · 油麵', en: 'Milkfish Skin Soup · Yellow Noodles', ja: 'サバヒー皮スープ · 中華麺',  ko: '밀크피시껍질국 · 중화면'    },
+  'ns-sk-rice':  { 'zh-TW': '虱目魚皮湯 · 米粉', en: 'Milkfish Skin Soup · Vermicelli',     ja: 'サバヒー皮スープ · ビーフン',ko: '밀크피시껍질국 · 쌀국수'    },
+  'ns-sk-board': { 'zh-TW': '虱目魚皮湯 · 板條', en: 'Milkfish Skin Soup · Flat Noodles',   ja: 'サバヒー皮スープ · フォー', ko: '밀크피시껍질국 · 넓적면'    },
+  'ns-cl-oil':   { 'zh-TW': '蛤蠣湯 · 油麵',   en: 'Clam Soup · Yellow Noodles',           ja: 'あさりスープ · 中華麺',      ko: '바지락국 · 중화면'          },
+  'ns-cl-rice':  { 'zh-TW': '蛤蠣湯 · 米粉',   en: 'Clam Soup · Vermicelli',               ja: 'あさりスープ · ビーフン',    ko: '바지락국 · 쌀국수'          },
+  'ns-cl-board': { 'zh-TW': '蛤蠣湯 · 板條',   en: 'Clam Soup · Flat Noodles',             ja: 'あさりスープ · フォー',      ko: '바지락국 · 넓적면'          },
+  'nd-oy-oil':   { 'zh-TW': '蚵仔乾 · 油麵',   en: 'Oyster Dry · Yellow Noodles',          ja: '牡蠣まぜ · 中華麺',          ko: '굴비빔 · 중화면'            },
+  'nd-oy-rice':  { 'zh-TW': '蚵仔乾 · 米粉',   en: 'Oyster Dry · Rice Vermicelli',         ja: '牡蠣まぜ · ビーフン',        ko: '굴비빔 · 쌀국수'            },
+  'nd-oy-misua': { 'zh-TW': '蚵仔乾 · 麵線',   en: 'Oyster Dry · Thin Noodles',            ja: '牡蠣まぜ · 素麺',            ko: '굴비빔 · 소면'              },
+  'nd-oy-board': { 'zh-TW': '蚵仔乾 · 板條',   en: 'Oyster Dry · Flat Noodles',            ja: '牡蠣まぜ · フォー',          ko: '굴비빔 · 넓적면'            },
+  'nd-pl-oil':   { 'zh-TW': '乾油麵',           en: 'Plain Dry Yellow Noodles',             ja: 'プレーン中華麺',              ko: '비빔 중화면'                },
+  'nd-pl-rice':  { 'zh-TW': '乾米粉',           en: 'Plain Dry Rice Vermicelli',            ja: 'プレーンビーフン',            ko: '비빔 쌀국수'                },
+  'nd-pl-misua': { 'zh-TW': '乾麵線',           en: 'Plain Dry Thin Noodles',               ja: 'プレーン素麺',                ko: '비빔 소면'                  },
+  'nd-pl-board': { 'zh-TW': '乾板條',           en: 'Plain Dry Flat Rice Noodles',          ja: 'プレーンフォー',              ko: '비빔 넓적면'                },
+  'po-01': { 'zh-TW': '蚵仔粥',              en: 'Oyster Congee',                    ja: '牡蠣粥',                     ko: '굴죽'                       },
+  'po-02': { 'zh-TW': '海鮮粥',              en: 'Seafood Congee',                   ja: '海鮮粥',                     ko: '해산물죽'                   },
+  'po-03': { 'zh-TW': '無刺魚肚粥',          en: 'Milkfish Belly Congee',            ja: 'サバヒー腹粥',               ko: '밀크피시 뱃살죽'            },
+  'po-04': { 'zh-TW': '無刺魚(去皮)粥',      en: 'Skinless Milkfish Congee',         ja: '皮なしサバヒー粥',           ko: '껍질없는 밀크피시죽'        },
+  'po-05': { 'zh-TW': '虱目魚皮粥',          en: 'Milkfish Skin Congee',             ja: 'サバヒー皮粥',               ko: '밀크피시 껍질죽'            },
+  'po-06': { 'zh-TW': '蛤蠣粥',              en: 'Clam Congee',                      ja: 'あさり粥',                   ko: '바지락죽'                   },
+  'po-07': { 'zh-TW': '★ 痛風海鮮粥',       en: '★ Gout Special Seafood Congee',   ja: '★ 痛風海鮮粥（特盛）',       ko: '★ 통풍 해산물죽'            },
+  'sp-01': { 'zh-TW': '蚵仔湯',              en: 'Oyster Soup',                      ja: '牡蠣スープ',                 ko: '굴국'                       },
+  'sp-02': { 'zh-TW': '海鮮湯',              en: 'Seafood Soup',                     ja: '海鮮スープ',                 ko: '해산물국'                   },
+  'sp-03': { 'zh-TW': '無刺魚肚湯',          en: 'Milkfish Belly Soup',              ja: 'サバヒー腹スープ',           ko: '밀크피시 뱃살국'            },
+  'sp-04': { 'zh-TW': '無刺魚(去皮)湯',      en: 'Skinless Milkfish Soup',           ja: '皮なしサバヒースープ',       ko: '껍질없는 밀크피시국'        },
+  'sp-05': { 'zh-TW': '虱目魚皮湯',          en: 'Milkfish Skin Soup',               ja: 'サバヒー皮スープ',           ko: '밀크피시 껍질국'            },
+  'sp-06': { 'zh-TW': '蛤蠣湯',              en: 'Clam Soup',                        ja: 'あさりスープ',               ko: '바지락국'                   },
+  'sp-07': { 'zh-TW': '虱目魚丸湯',          en: 'Milkfish Ball Soup',               ja: 'サバヒーつみれスープ',       ko: '밀크피시 완자국'            },
+  'fr-01': { 'zh-TW': '蚵仔酥',              en: 'Crispy Oysters',                   ja: 'カリカリ牡蠣揚げ',           ko: '바삭 굴튀김'                },
+  'fr-02': { 'zh-TW': '泰式月亮蝦餅',        en: 'Thai Shrimp Cake',                 ja: 'タイ風エビケーキ',           ko: '태국식 새우전'              },
+  'fr-03': { 'zh-TW': '沙拉蝦球',            en: 'Salad Shrimp Balls',               ja: 'サラダ海老ボール',           ko: '샐러드 새우볼'              },
+  'fr-04': { 'zh-TW': '炸虱目魚柳',          en: 'Fried Milkfish Fillet',            ja: 'サバヒーフィレ揚げ',         ko: '밀크피시 필레 튀김'         },
+  'fr-05': { 'zh-TW': '炸魷魚',              en: 'Fried Squid',                      ja: 'イカ揚げ',                   ko: '오징어 튀김'                },
+  'fr-06': { 'zh-TW': '炸蝦捲',              en: 'Fried Shrimp Roll',                ja: '海老春巻き揚げ',             ko: '새우 롤튀김'                },
+  'fr-07': { 'zh-TW': '炸虱目魚丸',          en: 'Fried Milkfish Balls',             ja: 'サバヒーつみれ揚げ',         ko: '밀크피시 완자 튀김'         },
+  'fr-08': { 'zh-TW': '招牌炸豆腐',          en: 'Signature Fried Tofu',             ja: '看板揚げ豆腐',               ko: '시그니처 두부 튀김'         },
+  'ri-01': { 'zh-TW': '蚵仔魯肉飯',          en: 'Oyster Braised Pork Rice',         ja: '牡蠣ルーロー飯',             ko: '굴 루로우팡'                },
+  'ri-02': { 'zh-TW': '蒸蝦魯肉飯',          en: 'Steamed Shrimp Braised Pork Rice', ja: '蒸し海老ルーロー飯',         ko: '찐새우 루로우팡'            },
+  'ri-03': { 'zh-TW': '魯肉飯（小）',        en: 'Braised Pork Rice (S)',            ja: 'ルーロー飯（小）',           ko: '루로우팡 (소)'              },
+  'ri-04': { 'zh-TW': '魯肉飯（大）',        en: 'Braised Pork Rice (L)',            ja: 'ルーロー飯（大）',           ko: '루로우팡 (대)'              },
+  'ri-05': { 'zh-TW': '白飯',                en: 'Steamed Rice',                     ja: '白飯',                       ko: '흰쌀밥'                     },
+  'gb-01': { 'zh-TW': '蒜泥蝦蛄',            en: 'Garlic Mantis Shrimp',             ja: 'ニンニクシャコ',             ko: '마늘 갯가재'                },
+  'gb-02': { 'zh-TW': '蒜泥白肉',            en: 'Garlic Sliced Pork',               ja: 'ニンニク蒸し豚',             ko: '마늘 편육'                  },
+  'gb-03': { 'zh-TW': '川燙魷魚',            en: 'Blanched Squid',                   ja: '茹でイカ',                   ko: '데친 오징어'                },
+  'gb-04': { 'zh-TW': '川燙鮮蝦',            en: 'Blanched Shrimp',                  ja: '茹で鮮海老',                 ko: '데친 새우'                  },
+  'gb-05': { 'zh-TW': '川燙虱目魚皮',        en: 'Blanched Milkfish Skin',           ja: '茹でサバヒー皮',             ko: '데친 밀크피시 껍질'         },
+  'gb-06': { 'zh-TW': '虱目魚皮',            en: 'Milkfish Skin',                    ja: 'サバヒー皮',                 ko: '밀크피시 껍질'              },
+  'gb-07': { 'zh-TW': '蛤蠣濃菇羹',          en: 'Clam & Mushroom Thick Soup',       ja: 'あさりきのこあんかけ',       ko: '바지락 버섯 농후국'         },
+  'sd-01': { 'zh-TW': '胡麻苦瓜',            en: 'Sesame Bitter Melon',              ja: 'ゴマゴーヤ',                 ko: '참깨 여주'                  },
+  'sd-02': { 'zh-TW': '燙青菜',              en: 'Blanched Vegetables',              ja: '茹で野菜',                   ko: '데친 채소'                  },
+  'sd-03': { 'zh-TW': '皮蛋',                en: 'Century Egg',                      ja: 'ピータン',                   ko: '피단'                       },
+  'sd-04': { 'zh-TW': '荷包蛋',              en: 'Fried Egg',                        ja: '目玉焼き',                   ko: '달걀 프라이'                },
+  'bn-01': { 'zh-TW': '魚批便當',            en: 'Milkfish Bento',                   ja: 'サバヒー弁当',               ko: '밀크피시 도시락'            },
+  'bn-02': { 'zh-TW': '熱魚批便當',          en: 'Hot Milkfish Bento',               ja: '温かいサバヒー弁当',         ko: '따뜻한 밀크피시 도시락'     },
+  'bn-03': { 'zh-TW': '滷肉便當',            en: 'Braised Pork Bento',               ja: 'ルーロー弁当',               ko: '루로우 도시락'              },
+}
+
+export function t(lang: Lang): UI { return UI_STRINGS[lang] }
+export function tCat(catId: string, lang: Lang): string { return CAT_NAMES[catId]?.[lang] ?? catId }
+export function tItem(itemId: string, lang: Lang): string {
+  return ITEM_NAMES[itemId]?.[lang] ?? ITEM_NAMES[itemId]?.['zh-TW'] ?? itemId
+}
