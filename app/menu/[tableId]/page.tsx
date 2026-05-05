@@ -1,8 +1,8 @@
 'use client'
 
-import { useState, Suspense } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { MENU_CATEGORIES } from '@/lib/menu-data'
+import { MENU_CATEGORIES, ALL_MENU_ITEMS } from '@/lib/menu-data'
 import { useCartStore } from '@/store/cartStore'
 import { useLangStore } from '@/store/languageStore'
 import { LANG_LABELS, tCat, tItem, t, type Lang } from '@/lib/i18n'
@@ -37,6 +37,25 @@ function MenuContent({ tableId }: { tableId: string }) {
   const { lang } = useLangStore()
   const ui = t(lang)
 
+  const [specials, setSpecials] = useState<Array<{item_id: string; note: string}>>([])
+
+  useEffect(() => {
+    fetch('/api/specials')
+      .then(r => r.json())
+      .then(data => { if (Array.isArray(data)) setSpecials(data) })
+      .catch(() => {})
+  }, [])
+
+  const SPECIAL_CAT_ID = '__specials__'
+
+  const specialCategory = specials.length > 0 ? {
+    id: SPECIAL_CAT_ID,
+    items: specials
+      .map(s => ALL_MENU_ITEMS.find(i => i.id === s.item_id))
+      .filter(Boolean),
+    specials,
+  } : null
+
   const currentCategory = MENU_CATEGORIES.find((c) => c.id === activeCategory)
 
   const getItemCount = (itemId: string) => {
@@ -60,6 +79,18 @@ function MenuContent({ tableId }: { tableId: string }) {
       {/* Category Tabs */}
       <div className="bg-white border-b sticky top-0 z-10 shadow-sm">
         <div className="flex overflow-x-auto scrollbar-hide">
+          {specials.length > 0 && (
+            <button
+              onClick={() => setActiveCategory(SPECIAL_CAT_ID)}
+              className={`px-4 py-3 text-xs font-medium whitespace-nowrap border-b-2 transition-colors flex-shrink-0 ${
+                activeCategory === SPECIAL_CAT_ID
+                  ? 'border-orange-500 text-orange-500'
+                  : 'border-transparent text-gray-500 hover:text-gray-800'
+              }`}
+            >
+              ⭐ {lang === 'zh-TW' ? '今日推薦' : lang === 'en' ? "Today's Picks" : lang === 'ja' ? '本日おすすめ' : '오늘의 추천'}
+            </button>
+          )}
           {MENU_CATEGORIES.map((cat) => (
             <button
               key={cat.id}
@@ -78,6 +109,55 @@ function MenuContent({ tableId }: { tableId: string }) {
 
       {/* Menu Items */}
       <div className="p-4 space-y-2 max-w-lg mx-auto">
+        {/* 今日推薦 Tab 內容 */}
+        {activeCategory === SPECIAL_CAT_ID && specialCategory && (
+          <div className="space-y-2">
+            {specialCategory.items.map((menuItem) => {
+              if (!menuItem) return null
+              const count = getItemCount(menuItem.id)
+              const name = tItem(menuItem.id, lang)
+              const specialNote = specials.find(s => s.item_id === menuItem.id)?.note
+              return (
+                <div
+                  key={menuItem.id}
+                  className={`bg-white rounded-2xl px-4 py-3 shadow-sm flex justify-between items-center border-l-4 border-orange-400 ${
+                    !menuItem.isAvailable ? 'opacity-40' : ''
+                  }`}
+                >
+                  <div className="flex-1 min-w-0 pr-3">
+                    <div className="flex items-center gap-1.5 mb-0.5">
+                      <span className="text-xs bg-orange-100 text-orange-600 font-bold px-1.5 py-0.5 rounded-full">推薦</span>
+                    </div>
+                    <ItemName name={name} redChar={menuItem.redChar} className="font-medium text-gray-800 text-sm leading-snug" />
+                    {specialNote && <p className="text-xs text-orange-500 mt-0.5">{specialNote}</p>}
+                    <p className="text-orange-500 font-bold text-sm mt-1">NT$ {menuItem.price}</p>
+                  </div>
+                  {menuItem.isAvailable ? (
+                    <div className="flex items-center gap-2">
+                      {count > 0 && (
+                        <>
+                          <button
+                            onClick={() => updateQuantity(menuItem.id, count - 1)}
+                            className="w-8 h-8 rounded-full border-2 border-orange-400 text-orange-500 font-bold flex items-center justify-center text-lg"
+                          >−</button>
+                          <span className="w-5 text-center text-sm font-semibold text-gray-700">{count}</span>
+                        </>
+                      )}
+                      <button
+                        onClick={() => addItem(menuItem)}
+                        className="w-8 h-8 rounded-full bg-orange-500 text-white font-bold flex items-center justify-center text-xl shadow-sm active:scale-95 transition-transform"
+                      >+</button>
+                    </div>
+                  ) : (
+                    <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
+                      <span className="text-gray-400 text-xs">×</span>
+                    </div>
+                  )}
+                </div>
+              )
+            })}
+          </div>
+        )}
         {currentCategory?.items.map((menuItem: MenuItem) => {
           const count = getItemCount(menuItem.id)
           const name = tItem(menuItem.id, lang)

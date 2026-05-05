@@ -164,6 +164,9 @@ export default function AdminDashboard() {
             >
               {audioEnabled ? '🔔 音效已開啟' : '🔔 開啟音效'}
             </button>
+            <Link href="/admin/specials" className="text-xs bg-orange-400 hover:bg-orange-300 px-3 py-1.5 rounded-lg">
+              ⭐ 推薦
+            </Link>
             <Link href="/admin/tables" className="text-xs bg-orange-400 hover:bg-orange-300 px-3 py-1.5 rounded-lg">
               QR Code
             </Link>
