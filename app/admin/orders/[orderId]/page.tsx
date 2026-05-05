@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useParams } from 'next/navigation'
 import { supabase } from '@/lib/supabase/client'
 import { Order, OrderStatus } from '@/types'
 import Link from 'next/link'
@@ -19,18 +19,18 @@ const STATUS_LABEL: Record<OrderStatus, string> = {
   paid:      '已結帳',
 }
 
-export default function OrderDetailPage({
-  params,
-}: {
-  params: { orderId: string }
-}) {
+export default function OrderDetailPage() {
   const router = useRouter()
+  const params = useParams()
+  const orderId = params.orderId as string
   const [order, setOrder] = useState<Order | null>(null)
   const [loading, setLoading] = useState(true)
   const [updating, setUpdating] = useState(false)
   const [error, setError] = useState('')
 
   useEffect(() => {
+    if (!orderId) return
+
     const checkAuth = async () => {
       const { data: { session } } = await supabase.auth.getSession()
       if (!session) { router.push('/admin/login'); return }
@@ -38,21 +38,28 @@ export default function OrderDetailPage({
     checkAuth()
 
     const fetchOrder = async () => {
-      const res = await fetch(`/api/admin/orders/${params.orderId}`)
-      if (res.ok) {
-        const data = await res.json()
-        setOrder(data)
+      try {
+        const res = await fetch(`/api/admin/orders/${orderId}`)
+        if (res.ok) {
+          const data = await res.json()
+          setOrder(data)
+        } else {
+          const errData = await res.json().catch(() => ({}))
+          setError(errData.error || `載入失敗 (${res.status})`)
+        }
+      } catch {
+        setError('網路錯誤，請重試')
       }
       setLoading(false)
     }
     fetchOrder()
-  }, [params.orderId, router])
+  }, [orderId, router])
 
   const updateStatus = async (newStatus: OrderStatus) => {
     if (!order || updating) return
     setUpdating(true)
     setError('')
-    const res = await fetch(`/api/admin/orders/${order.id}`, {
+    const res = await fetch(`/api/admin/orders/${orderId}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ status: newStatus }),
@@ -76,8 +83,9 @@ export default function OrderDetailPage({
 
   if (!order) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 flex-col gap-4">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 flex-col gap-4 px-6">
         <p className="text-gray-500">找不到此訂單</p>
+        {error && <p className="text-red-400 text-sm text-center">{error}</p>}
         <Link href="/admin" className="text-orange-500 font-semibold">返回後台</Link>
       </div>
     )
